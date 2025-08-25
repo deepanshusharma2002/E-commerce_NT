@@ -1,0 +1,59 @@
+"use client";
+
+import { productsDummyData } from "./dummyData";
+import { useEffect, useState } from "react";
+import { productData } from "./interface";
+import Loader from "./Loader";
+import Product from "./Product";
+import Link from "next/link";
+
+export default function Products() {
+
+    const [posts, setPosts] = useState<productData[] | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    async function GetProducts() {
+        try {
+            const res = await fetch("http://fakestoreapi.com/products");
+
+            if (!res.ok) {
+                console.error(`Failed to fetch: ${res.status}`);
+            }
+
+            const posts = await res.json();
+            setLoading(false);
+
+            setPosts(posts);
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+            setLoading(false);
+            setPosts(productsDummyData);
+        }
+    }
+
+    useEffect(() => {
+        GetProducts();
+    }, [])
+
+    if (loading) {
+        return <div className="flex justify-center items-center h-100">
+            <Loader size={30} />
+        </div>
+    }
+
+    if (!posts || posts.length === 0) {
+        return <div className="flex justify-center items-center h-100">
+            <p className="text-red-500 font-bold text-xl">No Products Found, Please Check after later.</p>
+        </div>
+    }
+
+    return (
+        <div className="flex flex-wrap gap-6 justify-center">
+            {posts && posts.map((p) => (
+                <Link key={p.id} href={`/products/${p.id}`}>
+                <Product data={p} />
+                </Link>
+            ))}
+        </div>
+    );
+}
