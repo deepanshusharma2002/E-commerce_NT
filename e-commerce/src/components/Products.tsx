@@ -7,9 +7,10 @@ import Loader from "./Loader";
 import Product from "./Product";
 import Link from "next/link";
 
-export default function Products() {
+export default function Products({ search, sortBy }: { search: string; sortBy: string; }) {
 
     const [posts, setPosts] = useState<productData[] | null>(null);
+    const [allPosts, setAllPosts] = useState<productData[] | null>(null);
     const [loading, setLoading] = useState(true);
 
     async function GetProducts() {
@@ -24,16 +25,53 @@ export default function Products() {
             setLoading(false);
 
             setPosts(posts);
+            setAllPosts(posts);
         } catch (error) {
             console.error("Error fetching posts:", error);
             setLoading(false);
             setPosts(productsDummyData);
+            setAllPosts(productsDummyData);
         }
     }
 
     useEffect(() => {
         GetProducts();
     }, [])
+
+    useEffect(() => {
+        allPosts && allPosts?.length > 0 && setPosts((prev) => allPosts.filter((p) => p.title?.toUpperCase()?.includes(search.toUpperCase())));
+    }, [search])
+
+    useEffect(() => {
+        if (allPosts && allPosts?.length > 0) {
+            switch (sortBy) {
+                case "Price - Low to High":
+                    setPosts([...allPosts].sort((a, b) => a.price - b.price));
+                    break;
+
+                case "Price - High to Low":
+                    setPosts([...allPosts].sort((a, b) => b.price - a.price));
+                    break;
+
+                case "Highest Rated":
+                    setPosts([...allPosts].sort((a, b) => b.rating.rate - a.rating.rate));
+                    break;
+
+                case "Name - A to Z":
+                    setPosts([...allPosts].sort((a, b) => a.title.localeCompare(b.title)));
+                    break;
+
+                case "Name - Z to A":
+                    setPosts([...allPosts].sort((a, b) => b.title.localeCompare(a.title)));
+                    break;
+
+                default:
+                    setPosts(allPosts);
+            }
+
+        }
+    }, [sortBy])
+
 
     if (loading) {
         return <div className="flex justify-center items-center h-100">
@@ -43,7 +81,7 @@ export default function Products() {
 
     if (!posts || posts.length === 0) {
         return <div className="flex justify-center items-center h-100">
-            <p className="text-red-500 font-bold text-xl">No Products Found, Please Check after later.</p>
+            <p className="text-gray-500 font-bold text-xl">No Products Found, Please Check after later.</p>
         </div>
     }
 
@@ -51,7 +89,7 @@ export default function Products() {
         <div className="flex flex-wrap gap-6 justify-center">
             {posts && posts.map((p) => (
                 <Link key={p.id} href={`/products/${p.id}`}>
-                <Product data={p} />
+                    <Product data={p} />
                 </Link>
             ))}
         </div>

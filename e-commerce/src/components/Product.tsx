@@ -2,7 +2,7 @@ import { productData } from "./interface";
 import { Star } from "lucide-react";
 
 export default function Product({ data }: { data: productData }) {
-    return <div className="bg-white shadow-md rounded-xl p-4 w-70 hover:shadow-lg transition">
+    return <div className="bg-white rounded-xl p-4 w-70 hover:shadow-md transition">
         {/* Product Image */}
         <div className="flex justify-center">
             <img
