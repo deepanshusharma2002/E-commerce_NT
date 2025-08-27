@@ -5,6 +5,7 @@ import Products from "@/components/Products";
 import { useState } from "react";
 import { Search, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function Home() {
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
             </div>
 
-            <ShoppingCart className="ml-3 h-5 w-5 text-gray-600 cursor-pointer" />
+            <Link href={'/cart'}> <ShoppingCart className="ml-3 h-5 w-5 text-gray-600 cursor-pointer" /> </Link>
           </div>
         </div>
 
@@ -43,7 +44,7 @@ export default function Home() {
                 setFilterCategory(e.target.value);
                 router.push(
                   "products/categories/" +
-                    e.target.value?.toLowerCase().replace(" ", "_")
+                  e.target.value?.toLowerCase().replace(" ", "_")
                 );
               }}
               options={[
@@ -79,7 +80,11 @@ export default function Home() {
           Showing Products
         </div>
       </div>
-      <Products search={search} sortBy={sortBy} category={"All"} />
+      <Products search={search} sortBy={sortBy} />
+
+      <p className="text-center text-xs sm:text-sm text-gray-500 mt-8 sm:mt-10 pb-4">
+        © 2025 ECommerce Store. All rights reserved.
+      </p>
     </div>
   );
 }

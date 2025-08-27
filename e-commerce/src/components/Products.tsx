@@ -6,19 +6,14 @@ import { productData } from "./interface";
 import Loader from "./Loader";
 import Product from "./Product";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 
 export default function Products({
   search,
   sortBy,
-  category,
 }: {
   search: string;
   sortBy: string;
-  category: string;
 }) {
-  const params = useParams();
-
   const [posts, setPosts] = useState<productData[] | null>(null);
   const [allPosts, setAllPosts] = useState<productData[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,14 +52,6 @@ export default function Products({
         )
       );
   }, [search]);
-
-  useEffect(() => {
-    if (allPosts && allPosts?.length > 0 && category) {
-      category === "All"
-        ? setPosts(allPosts)
-        : setPosts((prev) => allPosts.filter((p) => p.category === category));
-    }
-  }, [category, allPosts]);
 
   useEffect(() => {
     if (allPosts && allPosts?.length > 0) {

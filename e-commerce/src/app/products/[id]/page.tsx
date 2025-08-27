@@ -1,7 +1,15 @@
+"use client";
+
 import { productsDummyData } from "@/components/dummyData";
+import { addToCart } from "@/redux/Slices/cartSlice";
 import { Heart, ShoppingCart } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function ProductViewPage({ params }: { params: { id: string } }) {
+    const dispatch = useDispatch();
+    const [wishlist, setWishlist] = useState(false);
     const product = productsDummyData.find((p) => p.id === Number(params?.id));
 
     if (!product) {
@@ -18,12 +26,13 @@ export default function ProductViewPage({ params }: { params: { id: string } }) 
             <div className="w-full bg-white">
                 <div className="flex items-center justify-between px-4 py-3">
                     <div className="text-lg font-semibold">Ecommerce Store</div>
-                    <ShoppingCart className="ml-3 h-5 w-5 text-gray-600 cursor-pointer" />
+                    <div>
+                        <Link href={'/cart'}> <ShoppingCart className="ml-3 h-5 w-5 text-gray-600 cursor-pointer" /> </Link>
+                    </div>
                 </div>
             </div>
 
             <div className="max-w-[1200px] mx-auto py-10 px-4 grid grid-cols-1 md:grid-cols-2 gap-10">
-                {/* Left: Product Image */}
                 <div className="flex justify-center items-center bg-gray-100 rounded-lg p-6">
                     <img
                         src={product.image}
@@ -32,20 +41,12 @@ export default function ProductViewPage({ params }: { params: { id: string } }) 
                     />
                 </div>
 
-                {/* Right: Product Details */}
                 <div>
-                    {/* Category */}
-                    <p className="text-sm text-gray-500 mb-2">{product.category}</p>
-
-                    {/* Title */}
+                    <p className="text-sm text-gray-600 mb-2">{product.category?.toUpperCase()}</p>
                     <h1 className="text-2xl font-bold mb-4">{product.title}</h1>
-
-                    {/* Price */}
                     <p className="text-xl font-semibold mb-2">${product.price}</p>
 
-                    {/* Rating */}
                     <div className="flex items-center mb-6">
-                        {/* Stars */}
                         <div className="flex text-yellow-400">
                             {Array.from({ length: 5 }, (_, i) => (
                                 <svg
@@ -62,19 +63,16 @@ export default function ProductViewPage({ params }: { params: { id: string } }) 
                                 </svg>
                             ))}
                         </div>
-                        {/* Rating number & count */}
                         <p className="ml-2 text-sm text-gray-600">
                             {product.rating.rate} ({product.rating.count} reviews)
                         </p>
                     </div>
 
-                    {/* Description */}
                     <h2 className="font-semibold mb-2">Description</h2>
                     <p className="text-gray-700 mb-6">{product.description}</p>
 
-                    {/* Buttons */}
                     <div className="flex gap-4 mb-4">
-                        <button className="flex-1 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">
+                        <button onClick={() => dispatch(addToCart(product))} className="flex-1 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">
                             Add to Cart
                         </button>
                         <button className="flex-1 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">
@@ -82,21 +80,16 @@ export default function ProductViewPage({ params }: { params: { id: string } }) 
                         </button>
                     </div>
 
-                    {/* Wishlist */}
-                    <button className="flex items-center text-gray-600 hover:text-black transition">
-                        <svg
-                            className="w-5 h-5 mr-2"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                        >
-                            <Heart />
-                        </svg>
+                    <button className="flex items-center text-gray-600 hover:text-black transition" onClick={() => setWishlist(!wishlist)}>
+                        <Heart color="gray" fill={wishlist ? `gray` : 'white'} className="w-5 h-5 mr-2" />
                         Wishlist
                     </button>
                 </div>
             </div>
+
+            <p className="text-center text-xs sm:text-sm text-gray-500 mt-8 sm:mt-10">
+                © 2025 ECommerce Store. All rights reserved.
+            </p>
         </div>
     );
 }
