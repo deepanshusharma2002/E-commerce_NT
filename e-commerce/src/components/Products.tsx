@@ -11,9 +11,11 @@ import { useParams } from "next/navigation";
 export default function Products({
   search,
   sortBy,
+  category,
 }: {
   search: string;
   sortBy: string;
+  category: string;
 }) {
   const params = useParams();
 
@@ -57,17 +59,12 @@ export default function Products({
   }, [search]);
 
   useEffect(() => {
-    console.log("Slug:", params.slug);
-    if (allPosts && allPosts?.length > 0 && params?.slug) {
-      params.slug === "all"
+    if (allPosts && allPosts?.length > 0 && category) {
+      category === "All"
         ? setPosts(allPosts)
-        : setPosts((prev) =>
-            allPosts.filter(
-              (p) => p.category === params?.slug?.replace("_", " ")
-            )
-          );
+        : setPosts((prev) => allPosts.filter((p) => p.category === category));
     }
-  }, [params, allPosts]);
+  }, [category, allPosts]);
 
   useEffect(() => {
     if (allPosts && allPosts?.length > 0) {

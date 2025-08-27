@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <div className="max-w-[1200px] mx-auto">
       <div className="w-full bg-white">
-        <div className="max-w-[1200px] mx-auto flex items-center justify-between px-4 py-3">
+        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 gap-3">
           <div className="text-lg font-semibold">Ecommerce Store</div>
 
           <div className="flex items-center w-full max-w-xs ml-auto">
@@ -34,15 +34,16 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="max-w-[1200px] mx-auto flex items-center justify-between px-4 py-0">
-          <div>
+        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-2 gap-3">
+          <div className="w-full sm:w-auto">
             <InputSelect
-              label="Filter: "
+              label="Filter:"
               value={filterCategory}
               onChange={(e) => {
                 setFilterCategory(e.target.value);
                 router.push(
-                  "products/categories/" + e.target.value?.toLowerCase().replace(" ", "_")
+                  "products/categories/" +
+                    e.target.value?.toLowerCase().replace(" ", "_")
                 );
               }}
               options={[
@@ -55,9 +56,9 @@ export default function Home() {
             />
           </div>
 
-          <div>
+          <div className="w-full sm:w-auto">
             <InputSelect
-              label="Sort By: "
+              label="Sort By:"
               value={sortBy ? sortBy : "None"}
               onChange={(e) => setSortBy(e.target.value)}
               options={[
@@ -78,7 +79,7 @@ export default function Home() {
           Showing Products
         </div>
       </div>
-      <Products search={search} sortBy={sortBy} />
+      <Products search={search} sortBy={sortBy} category={"All"} />
     </div>
   );
 }
