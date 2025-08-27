@@ -4,8 +4,10 @@ import InputSelect from "@/components/InputSelect";
 import Products from "@/components/Products";
 import { useState } from "react";
 import { Search, ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const [filterCategory, setFilterCategory] = useState<string>("All");
   const [sortBy, setSortBy] = useState<string>("");
   const [search, setSearch] = useState<string>("");
@@ -13,7 +15,6 @@ export default function Home() {
   return (
     <div className="max-w-[1200px] mx-auto">
       <div className="w-full bg-white">
-        
         <div className="max-w-[1200px] mx-auto flex items-center justify-between px-4 py-3">
           <div className="text-lg font-semibold">Ecommerce Store</div>
 
@@ -38,12 +39,17 @@ export default function Home() {
             <InputSelect
               label="Filter: "
               value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
+              onChange={(e) => {
+                setFilterCategory(e.target.value);
+                router.push(
+                  "products/categories/" + e.target.value?.toLowerCase().replace(" ", "_")
+                );
+              }}
               options={[
                 "All",
                 "Men's Clothing",
                 "Women's Clothing",
-                "Jewelry",
+                "Jewelery",
                 "Electronics",
               ]}
             />
@@ -68,7 +74,9 @@ export default function Home() {
       </div>
 
       <div className="max-w-[1200px] mx-auto flex px-4 py-4">
-        <div className="text-md font-semibold text-gray-600">Showing Products</div>
+        <div className="text-md font-semibold text-gray-600">
+          Showing Products
+        </div>
       </div>
       <Products search={search} sortBy={sortBy} />
     </div>

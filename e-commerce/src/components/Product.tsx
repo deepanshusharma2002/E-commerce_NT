@@ -14,7 +14,7 @@ export default function Product({ data }: { data: productData }) {
 
         <h2 className="text-lg font-semibold mt-3 text-gray-600 line-clamp-2">{data.title}</h2>
 
-        <p className="text-gray-500 text-md">{data.category}</p>
+        <p className="text-gray-500 py-1 text-sm">{data.category?.toUpperCase()}</p>
 
         <p className="text-gray-600 text-sm mt-2 line-clamp-2">
             {data.description}
