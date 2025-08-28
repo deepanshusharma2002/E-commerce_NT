@@ -6,10 +6,14 @@ import Loader from "@/components/Loader";
 import Product from "@/components/Product";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
-export default function ProductsPage({ params }: { params: { slug: string } }) {
-  const slug = params.slug;
+export default function ProductsPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = use(params);
   const [posts, setPosts] = useState<productData[] | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,18 +28,29 @@ export default function ProductsPage({ params }: { params: { slug: string } }) {
       const posts = await res.json();
       setLoading(false);
 
-      setPosts(slug === "All" ? posts : posts.filter((p) => p?.category === slug?.toLowerCase()?.replace("_", " ")));
+      setPosts(
+        slug === "All"
+          ? posts
+          : posts.filter(
+              (p) => p?.category === slug?.toLowerCase()?.replace("_", " ")
+            )
+      );
     } catch (error) {
       console.error("Error fetching posts:", error);
       setLoading(false);
-      setPosts(slug === "All" ? productsDummyData : productsDummyData.filter((p) => p?.category === slug?.toLowerCase()?.replace("_", " ")));
+      setPosts(
+        slug === "All"
+          ? productsDummyData
+          : productsDummyData.filter(
+              (p) => p?.category === slug?.toLowerCase()?.replace("_", " ")
+            )
+      );
     }
   }
 
   useEffect(() => {
     GetProducts();
   }, [slug]);
-
 
   return (
     <div className="max-w-[1200px] mx-auto">
@@ -44,7 +59,10 @@ export default function ProductsPage({ params }: { params: { slug: string } }) {
           <div className="text-lg font-semibold">Ecommerce Store</div>
 
           <div>
-            <Link href={'/cart'}> <ShoppingCart className="ml-3 h-5 w-5 text-gray-600 cursor-pointer" /> </Link>
+            <Link href={"/cart"}>
+              {" "}
+              <ShoppingCart className="ml-3 h-5 w-5 text-gray-600 cursor-pointer" />{" "}
+            </Link>
           </div>
         </div>
       </div>
@@ -54,7 +72,6 @@ export default function ProductsPage({ params }: { params: { slug: string } }) {
           Showing Products
         </div>
       </div>
-
 
       {loading ? (
         <div className="flex justify-center items-center h-100">
