@@ -19,7 +19,7 @@ export default function Home() {
         <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 gap-3">
           <div className="text-lg font-semibold">Ecommerce Store</div>
 
-          <div className="flex items-center w-full max-w-xs ml-auto">
+          <div className="flex items-center w-full sm:max-w-xs ml-auto">
             <div className="relative flex-1">
               <input
                 type="text"
@@ -36,7 +36,7 @@ export default function Home() {
         </div>
 
         <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-2 gap-3">
-          <div className="w-full sm:w-auto">
+          <div className="w-full">
             <InputSelect
               label="Filter:"
               value={filterCategory}

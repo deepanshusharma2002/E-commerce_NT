@@ -23,7 +23,6 @@ export default function CartPage() {
             <p className="text-gray-600 mb-6 sm:mb-8">Review and manage your cart items</p>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-                {/* Cart Items */}
                 <div className="lg:col-span-2">
                     <h2 className="text-base sm:text-lg font-semibold mb-4">Cart Items</h2>
                     <div className="space-y-4">
@@ -35,7 +34,6 @@ export default function CartPage() {
                                     key={item.id}
                                     className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white p-4 rounded-lg shadow-md"
                                 >
-                                    {/* Left side */}
                                     <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                                         <div className="flex items-center justify-center bg-gray-100 shadow-md rounded-lg sm:mx-0">
                                             <Image
@@ -64,7 +62,6 @@ export default function CartPage() {
                                         </div>
                                     </div>
 
-                                    {/* Right side */}
                                     <div className="flex flex-row sm:flex-col justify-between sm:items-end mt-4 sm:mt-0">
                                         <p className="font-semibold mb-2 sm:mb-2 text-center sm:text-right">
                                             ${(item.price * (item.quantity || 1)).toFixed(2)}
@@ -103,7 +100,6 @@ export default function CartPage() {
                     </div>
                 </div>
 
-                {/* Order Summary */}
                 <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md h-fit">
                     <h2 className="text-base sm:text-lg font-semibold mb-4">Order Summary</h2>
                     <div className="space-y-2 text-sm">
