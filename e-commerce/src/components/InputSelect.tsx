@@ -19,9 +19,7 @@ export default function InputSelect({
     <div className="flex items-center space-x-2 ml-auto">
       <label className="text-sm font-medium text-gray-600">{label}</label>
 
-      <div className="relative w-[240px]">
-        {" "}
-        {/* <- pick the width you want */}
+      <div className="relative w-[350px] sm:w-[200px]">
         <select
           value={value}
           onChange={onChange}
